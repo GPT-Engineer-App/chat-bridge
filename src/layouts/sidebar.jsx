@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { CircleUser, Menu, MessageSquare } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { navItems } from "../App";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Layout = () => {
   return (
@@ -50,6 +52,14 @@ const Sidebar = () => (
           ))}
         </nav>
       </div>
+      <div className="p-4">
+        <Input placeholder="Search chats" className="mb-4" />
+        <div className="space-y-4">
+          {/* Example chat items */}
+          <ChatItem name="John Doe" lastMessage="Hey, how are you?" />
+          <ChatItem name="Jane Smith" lastMessage="Let's catch up later." />
+        </div>
+      </div>
     </div>
   </div>
 );
@@ -77,6 +87,14 @@ const MobileSidebar = () => (
           </SidebarNavLink>
         ))}
       </nav>
+      <div className="p-4">
+        <Input placeholder="Search chats" className="mb-4" />
+        <div className="space-y-4">
+          {/* Example chat items */}
+          <ChatItem name="John Doe" lastMessage="Hey, how are you?" />
+          <ChatItem name="Jane Smith" lastMessage="Let's catch up later." />
+        </div>
+      </div>
     </SheetContent>
   </Sheet>
 );
@@ -112,6 +130,19 @@ const SidebarNavLink = ({ to, children }) => (
   >
     {children}
   </NavLink>
+);
+
+const ChatItem = ({ name, lastMessage }) => (
+  <div className="flex items-center space-x-4 p-2 hover:bg-muted cursor-pointer rounded-lg">
+    <Avatar>
+      <AvatarImage src="https://via.placeholder.com/40" alt={name} />
+      <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+    </Avatar>
+    <div className="flex-1">
+      <div className="font-semibold">{name}</div>
+      <div className="text-sm text-muted-foreground">{lastMessage}</div>
+    </div>
+  </div>
 );
 
 export default Layout;

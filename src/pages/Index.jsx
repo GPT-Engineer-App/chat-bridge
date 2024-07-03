@@ -17,7 +17,6 @@ const Index = () => {
 
   return (
     <div className="flex h-full">
-      <Sidebar />
       <ChatWindow
         messages={messages}
         inputValue={inputValue}
@@ -28,29 +27,7 @@ const Index = () => {
   );
 };
 
-const Sidebar = () => (
-  <div className="w-80 border-r p-4">
-    <Input placeholder="Search chats" className="mb-4" />
-    <div className="space-y-4">
-      {/* Example chat items */}
-      <ChatItem name="John Doe" lastMessage="Hey, how are you?" />
-      <ChatItem name="Jane Smith" lastMessage="Let's catch up later." />
-    </div>
-  </div>
-);
 
-const ChatItem = ({ name, lastMessage }) => (
-  <div className="flex items-center space-x-4 p-2 hover:bg-muted cursor-pointer rounded-lg">
-    <Avatar>
-      <AvatarImage src="https://via.placeholder.com/40" alt={name} />
-      <AvatarFallback>{name.charAt(0)}</AvatarFallback>
-    </Avatar>
-    <div className="flex-1">
-      <div className="font-semibold">{name}</div>
-      <div className="text-sm text-muted-foreground">{lastMessage}</div>
-    </div>
-  </div>
-);
 
 const ChatWindow = ({ messages, inputValue, setInputValue, handleSendMessage }) => (
   <div className="flex-1 flex flex-col">
