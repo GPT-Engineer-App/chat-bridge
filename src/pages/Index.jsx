@@ -27,8 +27,6 @@ const Index = () => {
   );
 };
 
-
-
 const ChatWindow = ({ messages, inputValue, setInputValue, handleSendMessage }) => (
   <div className="flex-1 flex flex-col">
     <div className="flex items-center p-4 border-b">
@@ -60,7 +58,7 @@ const ChatWindow = ({ messages, inputValue, setInputValue, handleSendMessage }) 
 
 const MessageBubble = ({ message }) => (
   <div
-    className={`p-2 rounded-lg max-w-xs ${
+    className={`p-2 rounded-lg max-w-xs mb-4 ${
       message.sender === "me" ? "bg-primary text-primary-foreground self-end" : "bg-muted"
     }`}
   >
