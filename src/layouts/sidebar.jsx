@@ -11,9 +11,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { CircleUser, Menu, MessageSquare } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
-import { navItems } from "../App";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
 
 const Layout = () => {
   return (
@@ -33,36 +33,46 @@ const Layout = () => {
   );
 };
 
-const Sidebar = () => (
-  <div className="hidden border-r bg-muted/40 md:block">
-    <div className="flex h-full max-h-screen flex-col gap-2">
-      <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <NavLink to="/" className="flex items-center gap-2 font-semibold">
-          <MessageSquare className="h-6 w-6" />
-          <span>Chat App</span>
-        </NavLink>
-      </div>
-      <div className="flex-1">
-        <nav className="grid items-start px-2 text-sm font-medium lg:px-4 gap-2">
-          {navItems.map((item) => (
-            <SidebarNavLink key={item.to} to={item.to}>
-              {item.icon}
-              {item.title}
-            </SidebarNavLink>
-          ))}
-        </nav>
-      </div>
-      <div className="p-4">
-        <Input placeholder="Search chats" className="mb-4" />
-        <div className="space-y-4">
-          {/* Example chat items */}
-          <ChatItem name="John Doe" lastMessage="Hey, how are you?" />
-          <ChatItem name="Jane Smith" lastMessage="Let's catch up later." />
+const Sidebar = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const chatItems = [
+    { name: "John Doe", lastMessage: "Hey, how are you?" },
+    { name: "Jane Smith", lastMessage: "Let's catch up later." },
+    { name: "Alice Johnson", lastMessage: "Meeting at 3 PM." },
+    { name: "Bob Brown", lastMessage: "Got the documents." },
+  ];
+
+  const filteredChatItems = chatItems.filter((chat) =>
+    chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="hidden border-r bg-muted/40 md:block">
+      <div className="flex h-full max-h-screen flex-col gap-2">
+        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+          <NavLink to="/" className="flex items-center gap-2 font-semibold">
+            <MessageSquare className="h-6 w-6" />
+            <span>Chat App</span>
+          </NavLink>
+        </div>
+        <div className="flex-1 p-4">
+          <Input
+            placeholder="Search chats"
+            className="mb-4"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="space-y-4">
+            {filteredChatItems.map((chat, index) => (
+              <ChatItem key={index} name={chat.name} lastMessage={chat.lastMessage} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const MobileSidebar = () => (
   <Sheet>
@@ -81,20 +91,15 @@ const MobileSidebar = () => (
           <MessageSquare className="h-6 w-6" />
           <span className="sr-only">Chat App</span>
         </NavLink>
-        {navItems.map((item) => (
-          <SidebarNavLink key={item.to} to={item.to}>
-            {item.title}
-          </SidebarNavLink>
-        ))}
-      </nav>
-      <div className="p-4">
-        <Input placeholder="Search chats" className="mb-4" />
-        <div className="space-y-4">
-          {/* Example chat items */}
-          <ChatItem name="John Doe" lastMessage="Hey, how are you?" />
-          <ChatItem name="Jane Smith" lastMessage="Let's catch up later." />
+        <div className="p-4">
+          <Input placeholder="Search chats" className="mb-4" />
+          <div className="space-y-4">
+            {/* Example chat items */}
+            <ChatItem name="John Doe" lastMessage="Hey, how are you?" />
+            <ChatItem name="Jane Smith" lastMessage="Let's catch up later." />
+          </div>
         </div>
-      </div>
+      </nav>
     </SheetContent>
   </Sheet>
 );
@@ -116,20 +121,6 @@ const UserDropdown = () => (
       <DropdownMenuItem>Logout</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
-);
-
-const SidebarNavLink = ({ to, children }) => (
-  <NavLink
-    to={to}
-    className={({ isActive }) =>
-      cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary text-muted-foreground",
-        isActive && "text-primary bg-muted",
-      )
-    }
-  >
-    {children}
-  </NavLink>
 );
 
 const ChatItem = ({ name, lastMessage }) => (
