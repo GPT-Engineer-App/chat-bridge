@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const Index = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    const clearChat = () => setMessages([]);
+    window.addEventListener("clearChat", clearChat);
+    return () => window.removeEventListener("clearChat", clearChat);
+  }, []);
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
